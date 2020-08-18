@@ -20,6 +20,8 @@ mvn package
 
 将构建的target/nacos-elasticsearch-xx.zip包解压到每个es节点的`plugins`目录，将外层文件夹重命名为`nacos-elasticsearch`（注意权限），最终目录结构如下：
 
+> 也可以用`elasticsearch-plugin`命令直接安装zip
+
 ```
 plugins
 |--nacos-elasticsearch
@@ -31,7 +33,7 @@ plugins
 
 配置每个es节点，增加nacos相关配置项，并重启每个es节点，注意节点是否能正常启动。如果一切顺利，在nacos管理界面可以查看到elasticsearch的服务和实例。
 
-> 当前构建的插件包，默认支持7.0.0的elasticsearch，如果需要适配其他版本，可以自行修改`plugin-descriptor.properties`
+> 当前构建的插件包，默认支持7.1.1的elasticsearch，如果需要适配其他版本，可以自行修改`plugin-descriptor.properties`
 > 但也有可能因为jar包冲突等问题，无法适配elasticsearch
 
 ## 配置
