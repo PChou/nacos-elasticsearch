@@ -51,12 +51,12 @@ public class NacosClientImpl implements NacosClient {
     }
 
     @Override
-    public void registerNode(String serviceName, String Ip, int port, Map<String, String> metadata)
+    public void registerNode(String serviceName, String host, int port, double weight, Map<String, String> metadata)
             throws RegisterException {
         try {
             String groupedServiceName = NamingUtils.getGroupedName(serviceName, groupName);
             Instance instance = new Instance();
-            instance.setIp(Ip);
+            instance.setIp(host);
             instance.setPort(port);
             instance.setMetadata(metadata);
 
@@ -65,6 +65,14 @@ public class NacosClientImpl implements NacosClient {
             beatInfo.setIp(instance.getIp());
             beatInfo.setPort(instance.getPort());
             beatInfo.setMetadata(instance.getMetadata());
+            if (weight < 0) {
+                instance.setWeight(1.0);
+                beatInfo.setWeight(1.0);
+            } else {
+                instance.setWeight(weight);
+                beatInfo.setWeight(weight);
+            }
+
             JsonNode result = serverProxy.sendBeat(beatInfo, lightBeatEnabled);
             if (result.has(CommonParams.LIGHT_BEAT_ENABLED)) {
                 lightBeatEnabled = result.get(CommonParams.LIGHT_BEAT_ENABLED).asBoolean();

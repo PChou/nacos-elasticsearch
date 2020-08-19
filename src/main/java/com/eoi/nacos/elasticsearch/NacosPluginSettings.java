@@ -16,6 +16,7 @@ public class NacosPluginSettings {
     public static final Setting<Integer> NACOS_PORT = Setting.intSetting("nacos.server.port", 8848, Setting.Property.NodeScope);
     public static final Setting<String> NACOS_USER = Setting.simpleString("nacos.server.user", "", Setting.Property.NodeScope);
     public static final Setting<String> NACOS_PASSWORD = Setting.simpleString("nacos.server.password", "", Setting.Property.NodeScope);
+    public static final Setting<Double> NACOS_NODE_WEIGHT = Setting.doubleSetting("nacos.node.weight", 1.0, 0.0, Setting.Property.NodeScope);
 
     public static List<Setting<?>> getSettings() {
         List<Setting<?>> settings = new ArrayList<>();
@@ -26,6 +27,7 @@ public class NacosPluginSettings {
         settings.add(NACOS_PORT);
         settings.add(NACOS_USER);
         settings.add(NACOS_PASSWORD);
+        settings.add(NACOS_NODE_WEIGHT);
         return settings;
     }
 }

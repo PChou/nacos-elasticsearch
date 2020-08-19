@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface NacosClient {
 
-    void registerNode(String serviceName, String host, int Ip, Map<String, String> metadata) throws RegisterException;
+    void registerNode(String serviceName, String host, int port, double weight, Map<String, String> metadata) throws RegisterException;
     void refresh() throws RefreshExecption;
     void close() throws Exception;
 

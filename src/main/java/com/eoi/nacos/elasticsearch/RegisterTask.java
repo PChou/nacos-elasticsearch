@@ -24,12 +24,18 @@ public class RegisterTask implements Runnable {
     private final NacosClient nacosClient;
     private final NodeEnvironment nodeEnvironment;
     private final String serviceName;
+    private final double weight;
 
-    public RegisterTask(Client client, NacosClient nacosClient, NodeEnvironment nodeEnvironment, String serviceName) {
+    public RegisterTask(Client client,
+                        NacosClient nacosClient,
+                        NodeEnvironment nodeEnvironment,
+                        String serviceName,
+                        double weight) {
         this.client = client;
         this.nacosClient = nacosClient;
         this.nodeEnvironment = nodeEnvironment;
         this.serviceName = serviceName;
+        this.weight = weight;
     }
 
     @Override
@@ -43,7 +49,7 @@ public class RegisterTask implements Runnable {
             final NodesInfoResponse response = respFuture.get(5, TimeUnit.SECONDS);
             final TransportAddress httpAddr = response.getNodes().get(0).getHttp().address().publishAddress();
             AccessController.doPrivileged((PrivilegedExceptionAction<Boolean>) () -> {
-                nacosClient.registerNode(serviceName, httpAddr.getAddress(), httpAddr.getPort(), new HashMap<>());
+                nacosClient.registerNode(serviceName, httpAddr.getAddress(), httpAddr.getPort(), weight, new HashMap<>());
                 return true;
             });
         } catch (Exception ex) {
