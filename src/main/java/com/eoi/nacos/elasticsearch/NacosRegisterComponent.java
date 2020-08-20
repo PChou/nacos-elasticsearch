@@ -11,6 +11,8 @@ import org.elasticsearch.threadpool.Scheduler;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +60,9 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         String user = NacosPluginSettings.NACOS_USER.get(settings);
         String password = NacosPluginSettings.NACOS_PASSWORD.get(settings);
         try {
-            nacosClient = new NacosClientImpl(server, user, password);
+            nacosClient = AccessController.doPrivileged((PrivilegedExceptionAction<NacosClient>) () -> {
+                return new NacosClientImpl(server, user, password);
+            });
         } catch (Exception ex) {
             logger.error("Failed to create nacos NamingService", ex);
             return;

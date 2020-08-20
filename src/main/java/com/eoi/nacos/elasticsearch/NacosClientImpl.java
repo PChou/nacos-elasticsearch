@@ -90,7 +90,7 @@ public class NacosClientImpl implements NacosClient {
                         NamingUtils.getGroupName(beatInfo.getServiceName()), instance);
             }
         } catch (Exception ex) {
-            throw new RegisterException(String.format("Failed to send beat or register to nacos"), ex);
+            throw new RegisterException("Failed to send beat or register to nacos", ex);
         }
     }
 
