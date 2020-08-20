@@ -13,14 +13,14 @@ import com.alibaba.nacos.client.naming.utils.InitUtils;
 import com.alibaba.nacos.common.utils.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 public class NacosClientImpl implements NacosClient {
     private static final Logger logger = LogManager.getLogger(NacosClientImpl.class);
 
-    private final String server;
-    private final int port;
+    private final List<String> servers;
     private final String user;
     private final String password;
     private final String groupName = Constants.DEFAULT_GROUP;
@@ -28,13 +28,17 @@ public class NacosClientImpl implements NacosClient {
     private NamingProxy serverProxy;
     private boolean lightBeatEnabled = false;
 
-    public NacosClientImpl(String server, int port, String user, String password) {
-        this.server = server;
-        this.port = port;
+    /**
+     * @param endpoints List<server:port>
+     * @param user
+     * @param password
+     */
+    public NacosClientImpl(List<String> endpoints, String user, String password) {
+        this.servers = endpoints;
         this.user = user;
         this.password = password;
         Properties properties = new Properties();
-        properties.put(PropertyKeyConst.SERVER_ADDR, String.format("%s:%d", server, port));
+        properties.put(PropertyKeyConst.SERVER_ADDR, String.join(",", this.servers));
         if (user != null && !user.isEmpty()) {
             properties.put(PropertyKeyConst.USERNAME, user);
         }
@@ -86,7 +90,7 @@ public class NacosClientImpl implements NacosClient {
                         NamingUtils.getGroupName(beatInfo.getServiceName()), instance);
             }
         } catch (Exception ex) {
-            throw new RegisterException(String.format("Failed to send beat or register to nacos %s:%d", this.server, this.port), ex);
+            throw new RegisterException(String.format("Failed to send beat or register to nacos"), ex);
         }
     }
 

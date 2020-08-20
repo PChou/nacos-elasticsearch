@@ -15,7 +15,7 @@ public class NacosPluginTest extends ESIntegTestCase {
     protected Settings nodeSettings(int nodeOrdinal) {
         return Settings.builder()
                 .put("nacos.register.enabled", true)
-                .put("nacos.server.addr", "192.168.32.25")
+                .put("nacos.server.addrs", "192.168.32.25:8848")
                 .put("nacos.server.user", "nacos")
                 .put("nacos.server.password", "nacos")
                 .put(super.nodeSettings(nodeOrdinal))
@@ -28,6 +28,6 @@ public class NacosPluginTest extends ESIntegTestCase {
     }
 
     public void testSleep() throws Exception {
-        Thread.sleep(15000);
+        Thread.sleep(60000);
     }
 }

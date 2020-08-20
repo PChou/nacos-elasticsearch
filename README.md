@@ -43,8 +43,7 @@ plugins
 | key  | required | default value | description |
 | :--- | :----: | :------: | :---------- |
 | nacos.register.enabled | false | false  | 是否启动nacos自动注册功能，默认不开启 |
-| nacos.server.addr | true |   | nacos服务ip |
-| nacos.server.port | false | 8848  | nacos服务port |
+| nacos.server.addrs | true |   | nacos服务ip:port组成的list |
 | nacos.server.user | false |   | nacos登录用户名 |
 | nacos.server.password | false |   | nacos登录密码 |
 | nacos.node.weight | false | 1.0  | nacos节点权重, 0权重表示不可访问 |

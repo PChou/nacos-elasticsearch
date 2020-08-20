@@ -11,6 +11,7 @@ import org.elasticsearch.threadpool.Scheduler;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.eoi.nacos.elasticsearch.NacosPluginSettings.*;
@@ -48,9 +49,8 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         }
         TimeValue beatInterval = NACOS_BEAT_INTERVAL.get(this.settings);
         TimeValue refreshInterval = NACOS_BEAT_INTERVAL.get(this.settings);
-        String server = NacosPluginSettings.NACOS_SERVER.get(settings);
+        List<String> server = NACOS_SERVERS.get(settings);
         Double weight = NACOS_NODE_WEIGHT.get(settings);
-        int port = NacosPluginSettings.NACOS_PORT.get(settings);
         if (server == null || server.isEmpty()) {
             logger.warn("Missing `nacos.server.addr`, so that failed to start nacos register loop");
             return;
@@ -58,7 +58,7 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         String user = NacosPluginSettings.NACOS_USER.get(settings);
         String password = NacosPluginSettings.NACOS_PASSWORD.get(settings);
         try {
-            nacosClient = new NacosClientImpl(server, port, user, password);
+            nacosClient = new NacosClientImpl(server, user, password);
         } catch (Exception ex) {
             logger.error("Failed to create nacos NamingService", ex);
             return;
