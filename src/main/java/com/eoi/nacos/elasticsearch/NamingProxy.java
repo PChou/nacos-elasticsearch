@@ -144,6 +144,9 @@ public class NamingProxy implements Closeable {
 
     public void refreshSrvIfNeed() {
         try {
+
+            securityProxy.login(getServerList());
+
             if (!CollectionUtils.isEmpty(serverList)) {
                 NAMING_LOGGER.debug("server list provided by user: " + serverList);
                 return;
