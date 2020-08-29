@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.component.AbstractLifecycleComponent;
+import org.elasticsearch.common.settings.SecureString;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.env.NodeEnvironment;
@@ -28,6 +29,7 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
     private final NodeEnvironment nodeEnvironment;
     private final Settings settings;
     private final String serviceName;
+    private SecureString securePassword;
 
     private Scheduler.Cancellable beatScheduler;
     private Scheduler.Cancellable refreshScheduler;
@@ -40,6 +42,7 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         this.nodeEnvironment = nodeEnvironment;
         this.settings = settings;
         this.serviceName = NACOS_SERVICE_NAME.get(settings);
+        this.securePassword = NACOS_SECURE_PASSWORD.get(settings);
     }
 
     @Override
@@ -58,11 +61,16 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
             return;
         }
         String user = NacosPluginSettings.NACOS_USER.get(settings);
-        String password = NacosPluginSettings.NACOS_PASSWORD.get(settings);
+        String password;
+        if (securePassword == null || securePassword.length() == 0) {
+            password = NacosPluginSettings.NACOS_PASSWORD.get(settings);
+        } else {
+            password = securePassword.toString();
+        }
         try {
-            nacosClient = AccessController.doPrivileged((PrivilegedExceptionAction<NacosClient>) () -> {
-                return new NacosClientImpl(server, user, password);
-            });
+            final String pwd = password;
+            nacosClient = AccessController.doPrivileged((PrivilegedExceptionAction<NacosClient>)
+                    () -> new NacosClientImpl(server, user, pwd));
         } catch (Exception ex) {
             logger.error("Failed to create nacos NamingService", ex);
             return;

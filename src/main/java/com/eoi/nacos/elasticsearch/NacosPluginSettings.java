@@ -1,5 +1,7 @@
 package com.eoi.nacos.elasticsearch;
 
+import org.elasticsearch.common.settings.SecureSetting;
+import org.elasticsearch.common.settings.SecureString;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.unit.TimeValue;
 
@@ -17,6 +19,8 @@ public class NacosPluginSettings {
     public static final Setting<String> NACOS_USER = Setting.simpleString("nacos.server.user", "", Setting.Property.NodeScope);
     public static final Setting<String> NACOS_PASSWORD = Setting.simpleString("nacos.server.password", "", Setting.Property.NodeScope);
     public static final Setting<Double> NACOS_NODE_WEIGHT = Setting.doubleSetting("nacos.node.weight", 1.0, 0.0, Setting.Property.NodeScope);
+    // also declare as SecureString, support read password from elasticsearch keystore
+    public static final Setting<SecureString> NACOS_SECURE_PASSWORD =  SecureSetting.secureString("nacos.server.password.keystore", null);
 
     public static List<Setting<?>> getSettings() {
         List<Setting<?>> settings = new ArrayList<>();
@@ -27,6 +31,7 @@ public class NacosPluginSettings {
         settings.add(NACOS_USER);
         settings.add(NACOS_PASSWORD);
         settings.add(NACOS_NODE_WEIGHT);
+        settings.add(NACOS_SECURE_PASSWORD);
         return settings;
     }
 }

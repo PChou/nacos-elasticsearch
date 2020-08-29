@@ -44,11 +44,22 @@ plugins
 | :--- | :----: | :------: | :---------- |
 | nacos.register.enabled | false | false  | 是否启动nacos自动注册功能，默认不开启 |
 | nacos.server.addrs | true |   | nacos服务ip:port组成的list |
-| nacos.server.user | false |   | nacos登录用户名 |
-| nacos.server.password | false |   | nacos登录密码 |
+| nacos.server.user | false |   | nacos登录用户名，如果nacos开启安全验证，则需要配置 |
+| nacos.server.password | false |   | nacos登录密码，如果nacos开启安全验证，则需要配置 |
 | nacos.node.weight | false | 1.0  | nacos节点权重, 0权重表示不可访问 |
 | nacos.service.name | false | elasticsearch  | 配置当前es集群注册到nacos的服务名，默认服务名就是elasticsearch |
 | nacos.beat.interval | false | 10s  | 保持心跳的上报周期 |
 | nacos.refresh.interval | false | 30s  | 刷新nacos服务列表的周期 |
 
 要开启插件功能，至少配置`nacos.register.enabled: true`和`nacos.server.addr`
+
+### 使用keystore安全地存储密码
+
+支持通过`elasticseach-keystore`将密码加密配置：
+
+```
+bin/elasticsearch-keystore add nacos.server.password.keystore
+Enter value for nacos.server.password.keystore: 
+```
+
+插件会优先读取keystore中读取`nacos.server.password.keystore`的值作为密码，如果没有密码，则从`elasicsearch.yml`中尝试读取`nacos.server.password`

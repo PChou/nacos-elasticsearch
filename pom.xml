@@ -6,7 +6,7 @@
 
   <groupId>org.example</groupId>
   <artifactId>nacos-elasticsearch</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>nacos-elasticsearch</name>
   <description>elasticsearch plugin that automaticly register node endpoint to alibaba nacos</description>
 
