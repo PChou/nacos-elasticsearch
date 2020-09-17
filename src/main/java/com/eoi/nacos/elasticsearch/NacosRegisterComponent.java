@@ -54,6 +54,7 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         }
         TimeValue beatInterval = NACOS_BEAT_INTERVAL.get(this.settings);
         TimeValue refreshInterval = NACOS_BEAT_INTERVAL.get(this.settings);
+        String namespace = NACOS_SERVICE_NAMESPACE.get(this.settings);
         List<String> server = NACOS_SERVERS.get(settings);
         Double weight = NACOS_NODE_WEIGHT.get(settings);
         if (server == null || server.isEmpty()) {
@@ -70,7 +71,7 @@ public class NacosRegisterComponent extends AbstractLifecycleComponent {
         try {
             final String pwd = password;
             nacosClient = AccessController.doPrivileged((PrivilegedExceptionAction<NacosClient>)
-                    () -> new NacosClientImpl(server, user, pwd));
+                    () -> new NacosClientImpl(server, namespace, user, pwd));
         } catch (Exception ex) {
             logger.error("Failed to create nacos NamingService", ex);
             return;

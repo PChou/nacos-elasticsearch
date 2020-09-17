@@ -33,7 +33,7 @@ public class NacosClientImpl implements NacosClient {
      * @param user
      * @param password
      */
-    public NacosClientImpl(List<String> endpoints, String user, String password) {
+    public NacosClientImpl(List<String> endpoints, String namespace, String user, String password) {
         this.servers = endpoints;
         this.user = user;
         this.password = password;
@@ -45,7 +45,6 @@ public class NacosClientImpl implements NacosClient {
         if (password != null && !password.isEmpty()) {
             properties.put(PropertyKeyConst.PASSWORD, password);
         }
-        String namespace = InitUtils.initNamespaceForNaming(properties);
         String serverList = properties.getProperty(PropertyKeyConst.SERVER_ADDR);
         String endpoint = InitUtils.initEndpoint(properties);
         if (StringUtils.isNotEmpty(endpoint)) {

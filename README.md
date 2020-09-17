@@ -47,6 +47,7 @@ plugins
 | nacos.server.user | false |   | nacos登录用户名，如果nacos开启安全验证，则需要配置 |
 | nacos.server.password | false |   | nacos登录密码，如果nacos开启安全验证，则需要配置 |
 | nacos.node.weight | false | 1.0  | nacos节点权重, 0权重表示不可访问 |
+| nacos.service.namespace | false | public  | 命名空间 |
 | nacos.service.name | false | elasticsearch  | 配置当前es集群注册到nacos的服务名，默认服务名就是elasticsearch |
 | nacos.beat.interval | false | 10s  | 保持心跳的上报周期 |
 | nacos.refresh.interval | false | 30s  | 刷新nacos服务列表的周期 |

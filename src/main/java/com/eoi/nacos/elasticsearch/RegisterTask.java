@@ -36,6 +36,7 @@ public class RegisterTask implements Runnable {
         this.nodeEnvironment = nodeEnvironment;
         this.serviceName = serviceName;
         this.weight = weight;
+
     }
 
     @Override
