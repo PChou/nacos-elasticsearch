@@ -27,6 +27,7 @@ public class NacosPluginSettings {
         List<Setting<?>> settings = new ArrayList<>();
         settings.add(NACOS_ENABLED);
         settings.add(NACOS_SERVICE_NAMESPACE);
+        settings.add(NACOS_SERVICE_NAME);
         settings.add(NACOS_BEAT_INTERVAL);
         settings.add(NACOS_REFRESH_INTERVAL);
         settings.add(NACOS_SERVERS);
